@@ -370,20 +370,20 @@ a.logo_white {
     }
 
     100% {
-        opacity:0;
+        opacity: 0;
         height: 0;
     }
 }
 
-.loader{
-    border:2px solid white;
-    border-top:2px solid transparent;
-    width:20px;
-    height:20px;
+.loader {
+    border: 2px solid white;
+    border-top: 2px solid transparent;
+    width: 20px;
+    height: 20px;
     animation: 0.5s spin linear infinite forwards;
-    display:inline-block;
-    border-radius:50%;
-    margin-right:10px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 10px;
 }
 
 @keyframes spin {
@@ -392,7 +392,7 @@ a.logo_white {
     }
 
     100% {
-        
+
         transform: rotateZ(360deg);
     }
 }
@@ -412,14 +412,20 @@ a.logo_white {
     transition: width 0.3s ease-in-out, padding 0.3s ease-in-out;
     overflow: hidden;
     padding: 0 10px;
-    opacity:0;
+    opacity: 0;
 }
 
 .orderDetailsStatus.shrink {
-    width: 0!important;
+    width: 0 !important;
     padding: 0;
 }
 
-.orderStatusContainer.open{
-    gap:5px;
+.orderStatusContainer.open {
+    gap: 5px;
+}
+
+[type='email']:focus,
+[type='text']:focus,
+[type='checkbox']:focus {
+    box-shadow: none;
 }

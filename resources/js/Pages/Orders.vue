@@ -4,7 +4,10 @@ import { Head, Link } from '@inertiajs/vue3';
 import { ref, watch, defineProps, onMounted, computed } from 'vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import $ from 'jquery';
-
+import Modal from '@/Components/Modal.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
+import DangerButton from '@/Components/DangerButton.vue';
+import { useForm } from '@inertiajs/vue3';
 
 const props = defineProps({
     orders: {
@@ -12,9 +15,6 @@ const props = defineProps({
         required: true
     }
 });
-
-// console.log(props.orders)
-
 
 const formatDate = (datetime) => {
     if (typeof datetime !== 'string') {
@@ -112,6 +112,8 @@ onMounted(() => {
     });
 });
 
+const processing = ref(false);
+
 </script>
 
 <template>
@@ -138,46 +140,18 @@ onMounted(() => {
         </template>
 
         <div class="py-12">
-
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex-col flex md:flex-row gap-4 md:gap-4">
-                <div class="overflow-hidden" v-if="$page.props.auth.user.type == 'superadmin'">
-                    <div class="">
-                        <table class="w-full table-fixed">
-                            <tr class="border-b border-gray-700 border-solid">
-                                <th class="font-semibold text-left text-white pl-0 py-[14px] px-[12px]">Name</th>
-                                <th class="font-semibold text-left text-white py-[14px] px-[12px]">Created at</th>
-                                <th class="font-semibold text-left text-white py-[14px] px-[12px]">Created by</th>
-                                <th class="font-semibold text-left text-white py-[14px] px-[12px]">Status</th>
-                                <th class="font-semibold text-left text-white py-[14px] px-[12px]">Attachments</th>
-                                <th class="font-semibold text-left text-white py-[14px] px-[12px]">isLinked</th>
-                                <th class="font-semibold text-left text-white py-[14px] px-[12px]">Actions</th>
-                            </tr>
-                            <tr v-for="order in orders" :key="order.id" class="border-b border-gray-800 border-solid">
-                                <td class="font-semibold text-left text-white pl-0 py-[14px] px-[12px] max-w-[40%]">{{
-                                    order.name }}</td>
-                                <td class="text-left text-white py-[14px] px-[12px]"
-                                    v-html="formatDate(order.created_at)"></td>
-                                <td class="text-left text-white py-[14px] px-[12px]">{{ order.created_by }}</td>
-                                <td class="text-left text-white py-[14px] px-[12px]">{{ order.status }}</td>
-                                <td class="text-left text-white py-[14px] px-[12px]">
-                                    <ul>
-                                        <li v-for="attachment in order.attachments">
-                                            [{{ attachment.id }}]
-                                            <a target="_blank" class="transition hover:text-gray-500"
-                                                :href="attachment.file_path">{{ attachment.originalName }}</a>
-                                        </li>
-                                    </ul>
-                                </td>
-                                <td class="text-left text-white py-[14px] px-[12px]">{{ order.linked }}</td>
-                                <td class="text-left text-white py-[14px] px-[12px]">edit delete</td>
-                            </tr>
-                        </table>
-
+            <div class="errorDIV mx-auto max-w-7xl sm:px-6 lg:px-8 flex-col flex md:flex-row gap-4 md:gap-4">
+                    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md mb-[20px] w-full"
+                        v-if="$page.props.flash.message" role="alert">
+                        {{ $page.props.flash.message }}
                     </div>
                 </div>
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex-col flex md:flex-row gap-4 md:gap-4">
+
+                
 
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 w-full"
-                    v-if="$page.props.auth.user.type == 'admin'">
+                    v-if="$page.props.auth.user.type == 'admin' || $page.props.auth.user.type == 'superadmin'">
 
                     <div
                         class="filtersDiv p-2 border-b border-gray-100 dark:border-gray-700  flex flex-col md:flex-row gap-4">

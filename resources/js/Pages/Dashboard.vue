@@ -668,14 +668,14 @@ const formatFileSize = (size) => {
                         // <span class="text-green-700">[DONE]</span> work on user types<br>
                         // <span class="text-green-700">[DONE]</span> make admin orders different than superadmin orders<br>
                         // <span class="text-green-700">[DONE]</span> fix orders design in admin<br>
-                        // <span class="text-yellow-700">[PEND]</span> edit/delete orders functionality in superadmin<br>
-                        // <span class="text-yellow-700">[PEND]</span> edit/delete users functionality in superadmin<br>
-                        // <span class="text-yellow-700">[PEND]</span> delete files functionality superadmin<br>
+                        // <span class="text-green-700">[DONE]</span> edit/delete orders functionality in superadmin<br>
+                        // <span class="text-green-700">[DONE]</span> edit/delete users functionality in superadmin<br>
+                        // <span class="text-green-700">[DONE]</span> delete files functionality superadmin<br>
                         // <span class="text-green-700">[DONE]</span> add active/inactive/deleted status on orders, files and users db<br>
                         // <span class="text-yellow-700">[PEND]</span> do stats view<br>
                         // <span class="text-green-700">[DONE]</span> do admin view<br>
-                        // <span class="text-yellow-700">[PEND]</span> do superadmin create user<br>
-                        // <span class="text-yellow-700">[PEND]</span> add phone to user<br>
+                        // <span class="text-green-700">[DONE]</span> add phone to user<br>
+                        // <span class="text-green-700">[DONE]</span> verify email and phone<br>
                         // <span class="text-red-700">[FAIL]</span> try to install toastify
                     </div>
                 </div>

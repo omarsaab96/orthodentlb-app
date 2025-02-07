@@ -424,3 +424,9 @@ a.logo_white {
 .orderStatusContainer.open{
     gap:5px;
 }
+
+[type='email']:focus,
+[type='text']:focus,
+[type='checkbox']:focus{
+    box-shadow:none;
+}

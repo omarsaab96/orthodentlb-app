@@ -4,6 +4,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
+import { ref } from "vue";
+
 
 defineProps({
     mustVerifyEmail: {
@@ -16,10 +18,18 @@ defineProps({
 
 const user = usePage().props.auth.user;
 
+const emailVerificationRequired = ref(false)
+const phoneVerificationRequired = ref(false)
+
 const form = useForm({
     name: user.name,
     email: user.email,
+    phone: user.phone
 });
+const submitForm = () => {
+    // console.log("Submitting form:", form); // Log form before sending
+    form.patch(route('profile.update'));
+};
 </script>
 
 <template>
@@ -35,7 +45,7 @@ const form = useForm({
         </header>
 
         <div class="bg-white p-4 shadow sm:rounded-lg sm:p-8 dark:bg-gray-800 w-full">
-            <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
+            <form @submit.prevent="submitForm()" class="mt-6 space-y-6">
                 <div>
                     <InputLabel for="name" value="Name" />
 
@@ -49,23 +59,65 @@ const form = useForm({
                     <InputLabel for="email" value="Email" />
 
                     <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required
-                        autocomplete="username" />
+                        autocomplete="username"
+                        v-if="user.email_verified_at === null" />
 
                     <InputError class="mt-2" :message="form.errors.email" />
+
+                    <p class="text-white text-[16px] flex items-center justify-between"
+                        v-if="user.email_verified_at !== null">
+                        <span>{{ form.email }}</span>
+
+                        <span class="text-[14px] leading-[14px] text-[#1cdb5c]"><i class="fa-solid fa-check"></i>
+                            verified</span>
+                    </p>
                 </div>
 
-                <div v-if="mustVerifyEmail && user.email_verified_at === null">
-                    <p class="mt-2 text-sm text-gray-800 dark:text-gray-200">
-                        Your email address is unverified.
+                <div class="!mt-[10px]" v-if="user.email_verified_at === null">
+                    <p class="text-sm text-red-400" v-if="status !== 'verification-link-sent'">
+                        <i class="fa-solid fa-triangle-exclamation mr-[5px]"></i>Your email address is unverified.
                         <Link :href="route('verification.send')" method="post" as="button"
                             class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800">
-                        Click here to re-send the verification email.
+                        Verify now
                         </Link>
                     </p>
 
                     <div v-show="status === 'verification-link-sent'"
-                        class="mt-2 text-sm font-medium text-green-600 dark:text-green-400">
+                        class="mt-[10px] text-sm font-medium text-blue-600 dark:text-blue-400">
                         A new verification link has been sent to your email address.
+                    </div>
+                </div>
+
+                <div>
+                    <InputLabel for="phone" value="Phone" />
+
+                    <TextInput id="phone" type="text" class="mt-1 block w-full" v-model="form.phone" required
+                        autocomplete="phone"
+                        v-if="user.phone_verified_at === null" />
+
+                    <InputError class="mt-2" :message="form.errors.phone" />
+
+                    <p class="text-white text-[16px] flex items-center justify-between"
+                        v-if="user.phone_verified_at !== null">
+                        <span>{{ form.phone }}</span>
+
+                        <span class="text-[14px] leading-[14px] text-[#1cdb5c]"><i class="fa-solid fa-check"></i>
+                            verified</span>
+                    </p>
+                </div>
+
+                <div class="!mt-[10px]" v-if="user.phone_verified_at === null && phoneVerificationRequired">
+                    <p class="text-sm text-red-400">
+                        <i class="fa-solid fa-triangle-exclamation mr-[5px]"></i>Your phone number is unverified.
+                        <Link :href="route('verification.send')" method="post" as="button"
+                            class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800">
+                        Verify now
+                        </Link>
+                    </p>
+
+                    <div v-show="status === 'phone-verification-code-sent'"
+                        class="mt-2 text-sm font-medium text-green-600 dark:text-green-400">
+                        A new verification code has been sent to your phone.
                     </div>
                 </div>
 

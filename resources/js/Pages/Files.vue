@@ -1,8 +1,11 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref, watch, defineProps, onMounted } from 'vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
+import DangerButton from '@/Components/DangerButton.vue';
+import Modal from '@/Components/Modal.vue';
 
 
 const props = defineProps({
@@ -12,7 +15,41 @@ const props = defineProps({
     }
 });
 
-console.log(props.files)
+const deleteForm = useForm({
+    id: ''
+});
+
+const confirmingFileDeletion = ref(false);
+const fileToBeDeleted = ref(null);
+const processing = ref(false);
+
+const deleteFile = (file) => {
+    confirmingFileDeletion.value = true;
+    fileToBeDeleted.value = file;
+    deleteForm.id = fileToBeDeleted.value;
+};
+
+const confirmDeleteFile = () => {
+    processing.value = true
+
+    deleteForm.delete(route('deletefile'), {
+        preserveScroll: true,
+        onSuccess: () => closeModal(),
+        onError: (err) => console.log(err),
+        onFinish: () => deleteForm.reset(),
+    });
+};
+
+const closeModal = () => {
+    confirmingFileDeletion.value = false;
+    processing.value = false;
+    fileToBeDeleted.value = null;
+    deleteForm.value = {
+        id: ''
+    }
+};
+
+
 
 
 const formatDate = (datetime) => {
@@ -121,7 +158,18 @@ const formatFileSize = (size) => {
                                 <td style="border:1px solid white">{{ formatFileSize(file.size) }}</td>
                                 <td style="border:1px solid white" v-html="formatDate(file.dateOfUpload)"></td>
                                 <td style="border:1px solid white">{{ file.linked }}</td>
-                                <td style="border:1px solid white"><a target="_blank" class="transition hover:text-gray-500" :href="file.file_path">download</a> delete</td>
+                                <td style="border:1px solid white">
+                                    <a target="_blank"
+                                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"
+                                        :href="file.file_path">
+                                        download
+                                    </a>
+
+                                    <a href="javascript:;" @click="deleteFile(file)"
+                                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800">
+                                        delete
+                                    </a>
+                                </td>
                             </tr>
                         </table>
 
@@ -130,4 +178,56 @@ const formatFileSize = (size) => {
             </div>
         </div>
     </AuthenticatedLayout>
+
+    <Modal :show="confirmingFileDeletion" @close="closeModal">
+        <div class="p-6">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                Are you sure you want to delete file ?
+                <br><br>
+                <span class="font-bold">ID: {{ fileToBeDeleted?.id }}</span>
+            </h2>
+
+
+            <table class="mt-1 mb-8 text-sm text-gray-600 dark:text-gray-400">
+                <tr class="border-b border-t border-1 border-solid border-gray-600">
+                    <td class="w-[100px] font-semibold">Name</td>
+                    <td class="pr-[10px]">{{ fileToBeDeleted?.originalName }}<br></td>
+                </tr>
+                <tr class="border-b border-1 border-solid border-gray-600">
+                    <td class="w-[100px] font-semibold">Ext</td>
+                    <td class="pr-[10px]">.{{ fileToBeDeleted?.extension }}<br></td>
+                </tr>
+                <tr class="border-b border-1 border-solid border-gray-600">
+                    <td class="w-[100px] font-semibold">Size</td>
+                    <td class="pr-[10px]">{{ fileToBeDeleted?.size }}<br></td>
+                </tr>
+                <tr class="border-b border-1 border-solid border-gray-600">
+                    <td class="w-[100px] font-semibold">Uploaded by</td>
+                    <td class="pr-[10px]">{{ fileToBeDeleted?.uploadedBy }}<br></td>
+                </tr>
+                <tr class="border-b border-1 border-solid border-gray-600">
+                    <td class="w-[100px] font-semibold">isLinked</td>
+                    <td class="pr-[10px]">{{ fileToBeDeleted?.linked == 0 ? 'false' : 'true' }}<br></td>
+                </tr>
+            </table>
+
+            <p class="mt-1 text-sm text-red-400">
+                <i class="fa-solid fa-triangle-exclamation mr-[5px]"></i> Once this account is deleted, all of its
+                resources
+                and data
+                will be permanently deleted.
+            </p>
+
+            <div class="mt-6 flex justify-end">
+                <SecondaryButton @click="closeModal">
+                    Cancel
+                </SecondaryButton>
+
+                <DangerButton class="ms-3" :class="{ 'opacity-25': processing }" :disabled="processing"
+                    @click="confirmDeleteFile">
+                    Delete Account
+                </DangerButton>
+            </div>
+        </div>
+    </Modal>
 </template>

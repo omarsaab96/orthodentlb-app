@@ -1,10 +1,15 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, router } from '@inertiajs/vue3';
 import { ref, watch, defineProps, onMounted, inject } from 'vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import SecondaryButton from '@/Components/SecondaryButton.vue';
+import DangerButton from '@/Components/DangerButton.vue';
 import $ from 'jquery';
 const swal = inject("$swal");
+import { useForm } from '@inertiajs/vue3';
+import Modal from '@/Components/Modal.vue';
+
 
 const props = defineProps({
     order: {
@@ -19,7 +24,55 @@ const props = defineProps({
 
 const changeStatusLoader = ref(false)
 
-// console.log(props.relatedOrders)
+const confirmingOrderDeletion = ref(false);
+
+const editform = useForm({
+    id: props.order.id,
+    linked: props.order.linked
+});
+
+const editOrder = () => {
+    changeStatusLoader.value = true
+
+    editform.put(route('editOrder'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            changeStatusLoader.value = false;
+    editform.value = {
+        id: props.order.id,
+        linked: props.order.linked
+    }
+        },
+        onError: (err) => console.log(err),
+        onFinish: () => editform.reset(),
+    });
+};
+
+const deleteOrder = () => {
+    confirmingOrderDeletion.value = true;
+};
+
+const confirmDeleteOrder = () => {
+    changeStatusLoader.value = true
+    axios.delete('/api/deleteOrder/' + props.order.id, {
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+        .then((response) => {
+            closeModal();
+            router.get('/orders');
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
+const closeModal = () => {
+    confirmingOrderDeletion.value = false;
+    changeStatusLoader.value = false;
+};
+
 
 const formatDate = (datetime) => {
     if (typeof datetime !== 'string') {
@@ -218,30 +271,48 @@ onMounted(() => {
                             <h3 class=" font-semibold text-[20px] max-w-[calc(100%-150px)]">
                                 {{ props.order.name }}
                             </h3>
-                            <div class="flex items-center orderStatusContainer">
-                                <span v-if="changeStatusLoader" class="w-[20px] mr-[10px] loader"></span>
+                            <div class="flex items-center">
+                                <div class="flex items-center orderStatusContainer">
+                                    <span v-if="changeStatusLoader" class="w-[20px] mr-[10px] loader"></span>
 
-                                <div :class="{ active: order.status == 'new' }"
-                                    class="orderDetailsStatus bg-gray-300 text-gray-700">
-                                    new
+                                    <div :class="{ active: order.status == 'new' }"
+                                        class="orderDetailsStatus bg-gray-300 text-gray-700">
+                                        new
+                                    </div>
+                                    <div :class="{ active: order.status == 'processing' }"
+                                        class="orderDetailsStatus bg-yellow-500 text-yellow-800">
+                                        processing
+                                    </div>
+                                    <div :class="{ active: order.status == 'shipped' }"
+                                        class="orderDetailsStatus bg-blue-400 text-blue-900">
+                                        shipped
+                                    </div>
+                                    <div :class="{ active: order.status == 'done' }"
+                                        class="orderDetailsStatus bg-green-500 text-green-900">
+                                        done
+                                    </div>
+                                    <div :class="{ active: order.status == 'canceled' }"
+                                        class="orderDetailsStatus bg-red-500  text-red-900">
+                                        canceled
+                                    </div>
                                 </div>
-                                <div :class="{ active: order.status == 'processing' }"
-                                    class="orderDetailsStatus bg-yellow-500 text-yellow-800">
-                                    processing
-                                </div>
-                                <div :class="{ active: order.status == 'shipped' }"
-                                    class="orderDetailsStatus bg-blue-400 text-blue-900">
-                                    shipped
-                                </div>
-                                <div :class="{ active: order.status == 'done' }"
-                                    class="orderDetailsStatus bg-green-500 text-green-900">
-                                    done
-                                </div>
-                                <div :class="{ active: order.status == 'canceled' }"
-                                    class="orderDetailsStatus bg-red-500  text-red-900">
-                                    canceled
+
+                                <div v-if="$page.props.auth.user.type == 'superadmin'"
+                                    class="flex items-center ml-[20px]">
+                                    <div class="mr-[20px]">
+                                        <label for="linked" class="cursor-pointer mr-[5px]">isLinked</label>
+                                        <input id="linked" v-model="editform.linked" type="checkbox" :true-value="'1'"
+                                            :false-value="'0'" class="form-checkbox" @change="editOrder()" />
+                                    </div>
+                                    <div>
+                                        <a href="javascript:;" @click="deleteOrder()"
+                                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800">
+                                        delete
+                                    </a>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
 
 
@@ -383,4 +454,56 @@ onMounted(() => {
             </div>
         </div>
     </AuthenticatedLayout>
+
+    <Modal :show="confirmingOrderDeletion" @close="closeModal">
+        <div class="p-6">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                Are you sure you want to delete order ?
+                <br><br>
+                <span class="font-bold">ID: {{ props.order.id }}</span>
+            </h2>
+
+
+            <table class="mt-1 mb-8 text-sm text-gray-600 dark:text-gray-400">
+                <tr class="border-b border-t border-1 border-solid border-gray-600">
+                    <td class="w-[100px] font-semibold">Name</td>
+                    <td class="pr-[10px]">{{ props.order.name }}<br></td>
+                </tr>
+                <tr class="border-b border-1 border-solid border-gray-600">
+                    <td class="w-[100px] font-semibold">Created by</td>
+                    <td class="pr-[10px]">{{ props.order.created_by }}<br></td>
+                </tr>
+                <tr class="border-b border-1 border-solid border-gray-600">
+                    <td class="w-[100px] font-semibold">Status</td>
+                    <td class="pr-[10px]">{{ props.order.status }}<br></td>
+                </tr>
+                <tr class="border-b border-1 border-solid border-gray-600">
+                    <td class="w-[100px] font-semibold">Attachments</td>
+                    <td class="pr-[10px]">{{ props.order.attachments.length }} {{ props.order.attachments.length==1? 'file' : 'files' }}</td>
+                </tr>
+                <tr class="border-b border-1 border-solid border-gray-600">
+                    <td class="w-[100px] font-semibold">isLinked</td>
+                    <td class="pr-[10px]">{{ props.order.linked == 0 ? 'false' : 'true' }}<br></td>
+                </tr>
+            </table>
+
+            <p class="mt-1 text-sm text-red-400">
+                <i class="fa-solid fa-triangle-exclamation mr-[5px]"></i> Once this order is deleted, all of its
+                resources
+                and data
+                will be permanently deleted.
+            </p>
+
+            <div class="mt-6 flex justify-end">
+                <SecondaryButton @click="closeModal">
+                    Cancel
+                </SecondaryButton>
+
+                <DangerButton class="ms-3" :class="{ 'opacity-25': changeStatusLoader }" :disabled="changeStatusLoader"
+                    @click="confirmDeleteOrder">
+                    Delete Account
+                </DangerButton>
+            </div>
+        </div>
+    </Modal>
 </template>

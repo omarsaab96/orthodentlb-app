@@ -7,6 +7,8 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\File;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Redirect;
+
 
 class OrdersController extends Controller
 {
@@ -18,8 +20,14 @@ class OrdersController extends Controller
             return redirect()->route('dashboard')->with('error', 'Unauthorized access to /orders.');
         }
 
+        if ($user->type == 'superadmin') {
+            $orders = Order::orderBy('created_at', 'desc')->get();
+        }
 
-        $orders = Order::where('linked','1')->orderBy('created_at', 'desc')->get();
+        if ($user->type == 'admin') {
+            $orders = Order::where('linked', '1')->orderBy('created_at', 'desc')->get();
+        }
+
         if ($user->type === 'superadmin') {
             $orders = Order::orderBy('created_at', 'desc')->get();
         }
@@ -36,7 +44,7 @@ class OrdersController extends Controller
         }
 
         // Get files that have an ID like the IDs in the orders' attachments fields
-        $files = File::whereIn('id', $fileIds)->where('linked','1')->get();
+        $files = File::whereIn('id', $fileIds)->where('linked', '1')->get();
         if ($user->type === 'superadmin') {
             $files = File::whereIn('id', $fileIds)->get();
         }
@@ -52,7 +60,7 @@ class OrdersController extends Controller
             }
 
             if ($findUserWithId) {
-                $foundUser = User::where('id', $findUserWithId)->where('linked','1')->first();
+                $foundUser = User::where('id', $findUserWithId)->where('linked', '1')->first();
 
                 if ($foundUser) {
                     $order->created_by = $foundUser['name'];
@@ -75,12 +83,20 @@ class OrdersController extends Controller
 
         $user = auth()->user();
 
-        if ($user->type !== 'admin') {
-            return redirect()->route('orders')->with('error', 'Unauthorized access to /orders/details.');
+        if ($user->type !== 'admin' && $user->type !== 'superadmin') {
+            return redirect()->route('dashboard')->with('error', 'Unauthorized access to /orders/details.');
         }
 
+        if ($user->type == 'superadmin') {
+            $order = Order::where('id', $id)->first();
+        }
 
-        $order = Order::where('id', $id)->where('linked','1')->first();
+        if ($user->type == 'admin') {
+            $order = Order::where('id', $id)->where('linked', '1')->first();
+        }
+
+        
+
         if (!$order) {
             return redirect()->route('orders')->with('error', 'Order not found.');
         }
@@ -96,7 +112,13 @@ class OrdersController extends Controller
         }
 
         // Get files that have an ID like the IDs in the orders' attachments fields
-        $files = File::whereIn('id', $fileIds)->where('linked','1')->get();
+        if ($user->type == 'superadmin') {
+            $files = File::whereIn('id', $fileIds)->get();
+        }
+
+        if ($user->type == 'admin') {
+            $files = File::whereIn('id', $fileIds)->where('linked', '1')->get();
+        }
 
         // Attach files to their respective orders
 
@@ -110,7 +132,14 @@ class OrdersController extends Controller
         }
 
         if ($findUserWithId) {
-            $foundUser = User::where('id', $findUserWithId)->where('linked','1')->first();
+            if ($user->type == 'superadmin') {
+                $foundUser = User::where('id', $findUserWithId)->first();
+            }
+    
+            if ($user->type == 'admin') {
+                $foundUser = User::where('id', $findUserWithId)->where('linked', '1')->first();
+            }
+            
 
             if ($foundUser) {
                 $order->created_by = $foundUser['name'];
@@ -121,7 +150,13 @@ class OrdersController extends Controller
             $order->created_by = null;
         }
 
-        $relatedOrders = Order::where('created_by', $findUserWithId)->where('id', '!=', $id)->where('linked','1')->orderBy('created_at', 'desc')->get();
+        if ($user->type == 'superadmin') {
+            $relatedOrders = Order::where('created_by', $findUserWithId)->where('id', '!=', $id)->orderBy('created_at', 'desc')->get();
+        }
+
+        if ($user->type == 'admin') {
+            $relatedOrders = Order::where('created_by', $findUserWithId)->where('id', '!=', $id)->where('linked', '1')->orderBy('created_at', 'desc')->get();        }
+        
 
         // logger($relatedOrders);
 
@@ -137,12 +172,12 @@ class OrdersController extends Controller
 
         $user = auth()->user();
 
-        if ($user->type !== 'admin') {
-            return redirect()->route('orders')->with('error', 'Unauthorized access to /orders/details.');
+        if ($user->type !== 'admin' && $user->type !== 'superadmin') {
+            return redirect()->route('orders')->with('error', 'Unauthorized access to /orders/edit.');
         }
 
         // Find the order by its ID
-        $order = Order::where('id', $request['id'])->where('linked','1')->first();
+        $order = Order::where('id', $request['id'])->first();
 
         if (!$order) {
             return response()->json([
@@ -152,7 +187,7 @@ class OrdersController extends Controller
         }
 
         // Validate the request status
-        $status = $request ['status'];
+        $status = $request['status'];
         $validStatuses = ['new', 'processing', 'shipped', 'done', 'canceled'];
 
         if (!in_array($status, $validStatuses)) {
@@ -171,6 +206,65 @@ class OrdersController extends Controller
             'status' => 'success',
             'message' => 'Order status updated successfully.'
         ], 200);
+    }
+
+    public function updateOrder_isLinked(Request $request)
+    {
+        // dd($request->id);
+
+        $user = auth()->user();
+
+        if ($user->type !== 'superadmin') {
+            return redirect()->route('orders')->with('error', 'Unauthorized access to /orders/edit.');
+        }
+
+        // Find the order by its ID
+        $order = Order::where('id', $request['id'])->first();
+
+        if (!$order) {
+            return redirect()->route('orders.details', ['id' => $request->id])->with('error', 'Order not found.');
+        }
+
+        // Validate the request status
+        $isLinked = $request['linked'];
+        $validLinks = ['1', '0'];
+
+        if (!in_array($isLinked, $validLinks)) {
+            return redirect()->route('orders.details', ['id' => $request->id])->with('error', 'Invalid linked value.');
+
+        }
+
+        // Update the order status
+        $order->linked = $isLinked;
+        $order->save();
+
+        // Return a JSON success message
+        return redirect()->route('orders.details', ['id' => $request->id])->with('success', 'Order link updated successfully.');
+
+
+    }
+    
+    public function deleteOrder(Request $request)
+    {
+        $user = auth()->user();
+
+        if ($user->type !== 'superadmin') {
+            return redirect()->route('orders')->with('error', 'Unauthorized access to /orders/edit.');
+        }
+
+        // Find the order by its ID
+        $order = Order::where('id', $request['id'])->first();
+
+        if (!$order) {
+            return redirect()->route('orders.details', ['id' => $request->id])->with('error', 'Order not found.');
+        }
+
+        $order->delete();
+
+        // Return a JSON success message
+        return response()->json(['success' => 'Order deleted successfully']);
+
+
     }
 
 }
