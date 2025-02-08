@@ -38,10 +38,10 @@ const editOrder = () => {
         preserveScroll: true,
         onSuccess: () => {
             changeStatusLoader.value = false;
-    editform.value = {
-        id: props.order.id,
-        linked: props.order.linked
-    }
+            editform.value = {
+                id: props.order.id,
+                linked: props.order.linked
+            }
         },
         onError: (err) => console.log(err),
         onFinish: () => editform.reset(),
@@ -306,9 +306,9 @@ onMounted(() => {
                                     </div>
                                     <div>
                                         <a href="javascript:;" @click="deleteOrder()"
-                                        class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800">
-                                        delete
-                                    </a>
+                                            class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800">
+                                            delete
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -318,18 +318,36 @@ onMounted(() => {
 
 
                         <div class="flex flex-col mb-[50px]">
-                            <div class="text-[18px] mb-[20px] leading-[20px]">
-                                <span class="font-semibold">Created by:</span> {{ order.created_by == null ? 'unknown' :
-                                    order.created_by }}
-                            </div>
-                            <div class="flex items-center mb-[20px] dark:text-white-700 text-[18px] leading-[18px]">
-                                <span class="font-semibold">Created on:&nbsp;</span>
-                                <span v-html="formatDate(order.created_at)"> </span>
-                            </div>
-                            <div class="flex items-center dark:text-white-700 text-[18px] leading-[18px]">
-                                <span class="font-semibold">Last updated on:&nbsp;</span>
-                                <span v-html="formatDate(order.updated_at)"> </span>
-                            </div>
+                            <table class="mt-1 mb-8 text-sm text-gray-600 dark:text-gray-400">
+                                <tr class="border-b border-1 border-solid border-gray-600">
+                                    <td class="align-top w-[150px] font-semibold">Description</td>
+                                    <td class="align-top pr-[10px]"><span v-html="props.order.description ?? '<i>no description</i>'"></span></td>
+                                </tr>
+                                <tr class="border-b border-1 border-solid border-gray-600">
+                                    <td class="w-[150px] font-semibold">Created by</td>
+                                    <td class="pr-[10px]">Dr. {{ props.order.created_by }}<br></td>
+                                </tr>
+                                <tr class="border-b border-1 border-solid border-gray-600">
+                                    <td class="w-[150px] font-semibold">Created on:</td>
+                                    <td class="pr-[10px]" v-html="formatDate(order.created_at)"> </td>
+                                </tr>
+                                <tr class=" border-1 border-solid border-gray-600">
+                                    <td class="w-[15    0px] font-semibold">Last updated on:</td>
+                                    <td class="pr-[10px]" v-html="formatDate(order.updated_at)"> </td>
+                                </tr>
+                                <!-- <tr class="border-b border-1 border-solid border-gray-600">
+                                    <td class="w-[100px] font-semibold">Attachments</td>
+                                    <td class="pr-[10px]">{{ props.order.attachments.length }} {{
+                                        props.order.attachments.length
+                                        == 1 ?
+                                        'file'
+                                        : 'files' }}</td>
+                                </tr>
+                                <tr class="border-b border-1 border-solid border-gray-600">
+                                    <td class="w-[100px] font-semibold">isLinked</td>
+                                    <td class="pr-[10px]">{{ props.order.linked == 0 ? 'false' : 'true' }}<br></td>
+                                </tr> -->
+                            </table>
                         </div>
 
                         <div class="uploadedFilesDiv">
@@ -466,23 +484,29 @@ onMounted(() => {
 
             <table class="mt-1 mb-8 text-sm text-gray-600 dark:text-gray-400">
                 <tr class="border-b border-t border-1 border-solid border-gray-600">
-                    <td class="w-[100px] font-semibold">Name</td>
+                    <td class="w-[130px] font-semibold">Patient name</td>
                     <td class="pr-[10px]">{{ props.order.name }}<br></td>
                 </tr>
-                <tr class="border-b border-1 border-solid border-gray-600">
-                    <td class="w-[100px] font-semibold">Created by</td>
-                    <td class="pr-[10px]">{{ props.order.created_by }}<br></td>
+                <tr class="border-b border-t border-1 border-solid border-gray-600">
+                    <td class="align-top w-[130px] font-semibold">Description</td>
+                    <td class="align-top pr-[10px]">{{ props.order.description }}<br></td>
                 </tr>
                 <tr class="border-b border-1 border-solid border-gray-600">
-                    <td class="w-[100px] font-semibold">Status</td>
+                    <td class="w-[130px] font-semibold">Created by</td>
+                    <td class="pr-[10px]">Dr. {{ props.order.created_by }}<br></td>
+                </tr>
+                <tr class="border-b border-1 border-solid border-gray-600">
+                    <td class="w-[130px] font-semibold">Status</td>
                     <td class="pr-[10px]">{{ props.order.status }}<br></td>
                 </tr>
                 <tr class="border-b border-1 border-solid border-gray-600">
-                    <td class="w-[100px] font-semibold">Attachments</td>
-                    <td class="pr-[10px]">{{ props.order.attachments.length }} {{ props.order.attachments.length==1? 'file' : 'files' }}</td>
+                    <td class="w-[130px] font-semibold">Attachments</td>
+                    <td class="pr-[10px]">{{ props.order.attachments.length }} {{ props.order.attachments.length == 1 ?
+                        'file'
+                        : 'files' }}</td>
                 </tr>
                 <tr class="border-b border-1 border-solid border-gray-600">
-                    <td class="w-[100px] font-semibold">isLinked</td>
+                    <td class="w-[130px] font-semibold">isLinked</td>
                     <td class="pr-[10px]">{{ props.order.linked == 0 ? 'false' : 'true' }}<br></td>
                 </tr>
             </table>

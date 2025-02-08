@@ -54,6 +54,7 @@ class DashboardController extends Controller
 
         $createdOrder = Order::create([
             'name' => $request['orderName'],
+            'description' => $request['orderDescription'],
             'status' => 'new',
             'created_by' => auth()->id()
         ]);

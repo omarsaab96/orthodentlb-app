@@ -24,6 +24,7 @@ const props = defineProps({
 const form = ref({
     processing: false,
     name: '',
+    description:'',
     files: [],
 });
 
@@ -32,6 +33,7 @@ const formAcceptedFiles = ref([]);
 const responseMessage = ref("");
 const isDragActive = ref(false);
 const formNameError = ref(false);
+const formDescriptionError = ref(false);
 const formFilesError = ref(false);
 let triedToSubmit = false;
 const uploadProgress = ref({});
@@ -116,8 +118,10 @@ const saveFiles = (submittedform, createOrderID) => {
 
 const createNewOrder = (submittedform) => {
     let orderName = submittedform.name;
+    let orderDescription = submittedform.description;
     const formData = new FormData();
     formData.append("orderName", orderName);
+    formData.append("orderDescription", orderDescription);
     axios.post('/api/create-order', formData, {
         headers: {
             "Content-Type": "multipart/form-data",
@@ -141,6 +145,11 @@ const handleSubmit = () => {
         return;
     }
 
+    if (form.value.description.trim() === '') {
+        formDescriptionError.value = true;
+        return;
+    }
+
     if (form.value.files.length == 0) {
         formFilesError.value = true;
         return;
@@ -156,6 +165,13 @@ const validateFieldName = () => {
         formNameError.value = true;
     } else {
         formNameError.value = false;
+    }
+}
+const validateFieldDescription = () => {
+    if (triedToSubmit && form.value.description.trim() === '') {
+        formDescriptionError.value = true;
+    } else {
+        formDescriptionError.value = false;
     }
 }
 
@@ -346,7 +362,12 @@ const formatFileSize = (size) => {
         <template #header>
             <div class="flex flex-col justify-between">
                 <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200 mb-5 flex items-center">
-                    Hi, {{ $page.props.auth.user.name }}!
+                    Hi, 
+                    <span
+                        v-if="$page.props.auth.user.type == 'normal'">
+                        &nbsp;Dr.&nbsp;
+                    </span>
+                    {{ $page.props.auth.user.name }}!
                     <span
                         class="ml-[10px] bg-[#c6c656] text-[#916106] p-[2px] px-[5px] rounded-[5px] font-bold text-[12px] leading-[12px]"
                         v-if="$page.props.auth.user.type == 'admin'">
@@ -410,13 +431,17 @@ const formatFileSize = (size) => {
                                     {{ order.status }}
                                 </div>
 
-                                <div class="flex flex-col mb-[10px]">
-                                    <div class="text-[18px] mb-[10px] font-bold leading-[20px]">
+                                <div class="flex flex-col mb-0">
+                                    <div class="text-[18px] mb-[5px] font-bold leading-[20px]">
                                         {{ order.name }}
                                     </div>
-                                    <div class="flex items-center dark:text-white-700 text-[12px] leading-[12px]"
+                                    <div class="flex items-center mb-[15px] dark:text-gray-400 text-[12px] leading-[12px]"
                                         v-html="formatDate(order.created_at)">
                                     </div>
+                                    <div class="text-[14px] mb-[10px] leading-[16px]" v-if="order.description!=null">
+                                        {{ order.description }}
+                                    </div>
+                                    
                                 </div>
 
                                 <div class="uploadedFilesDiv">
@@ -522,10 +547,18 @@ const formatFileSize = (size) => {
                         <form @submit.prevent="handleSubmit">
                             <div class="mb-4 hideOnProcessing">
                                 <label for="name"
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300">Patient's name</label>
                                 <input type="text" id="name" :disabled="form.processing" v-model="form.name"
                                     @input="validateFieldName" :class="{ '!border-red-500': formNameError }"
                                     class="mt-1 block w-full rounded-[10px] border-gray-300 transition border-2 shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white hover:border-gray-400 focus:border-gray-400 focus:ring-0 focus:outline-none">
+                            </div>
+
+                            <div class="mb-4 hideOnProcessing">
+                                <label for="description"
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300">Description</label>
+                                <textarea type="text" id="name" :disabled="form.processing" v-model="form.description"
+                                @input="validateFieldDescription" :class="{ '!border-red-500': formDescriptionError }"
+                                    class="mt-1 block w-full rounded-[10px] border-gray-300 transition border-2 shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white hover:border-gray-400 focus:border-gray-400 focus:ring-0 focus:outline-none h-[150px] resize-none"></textarea>
                             </div>
 
                             <div class="hideOnProcessing mb-4">

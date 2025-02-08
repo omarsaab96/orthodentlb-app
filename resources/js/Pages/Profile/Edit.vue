@@ -22,7 +22,12 @@ defineProps({
     <AuthenticatedLayout>
         <template #header>
             <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200 mb-5 flex items-center">
-                    Hi, {{ $page.props.auth.user.name }}!
+                    Hi,
+                    <span
+                        v-if="$page.props.auth.user.type == 'normal'">
+                        &nbsp;Dr.&nbsp;
+                    </span>
+                    {{ $page.props.auth.user.name }}!
                     <span
                         class="ml-[10px] bg-[#c6c656] text-[#916106] p-[2px] px-[5px] rounded-[5px] font-bold text-[12px] leading-[12px]"
                         v-if="$page.props.auth.user.type == 'admin'">

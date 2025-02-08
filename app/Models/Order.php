@@ -9,6 +9,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class Order extends Model
 {
     protected $fillable = [
-        'name', 'created_at', 'created_by', 'status','attachments','linked'
+        'name', 'description', 'created_at', 'created_by', 'status','attachments','linked'
     ];
 }

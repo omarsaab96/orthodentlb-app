@@ -73,7 +73,7 @@ const submitForm = () => {
                     </p>
                 </div>
 
-                <div class="!mt-[10px]" v-if="user.email_verified_at === null">
+                <!-- <div class="!mt-[10px]" v-if="user.email_verified_at === null">
                     <p class="text-sm text-red-400" v-if="status !== 'verification-link-sent'">
                         <i class="fa-solid fa-triangle-exclamation mr-[5px]"></i>Your email address is unverified.
                         <Link :href="route('verification.send')" method="post" as="button"
@@ -86,7 +86,7 @@ const submitForm = () => {
                         class="mt-[10px] text-sm font-medium text-blue-600 dark:text-blue-400">
                         A new verification link has been sent to your email address.
                     </div>
-                </div>
+                </div> -->
 
                 <div>
                     <InputLabel for="phone" value="Phone" />
