@@ -23,3 +23,5 @@ services:
       - key: DB_PASSWORD
         value: YOUR_DATABASE_PASSWORD
     autoDeploy: true
+    env: docker
+    dockerfilePath: Dockerfile
