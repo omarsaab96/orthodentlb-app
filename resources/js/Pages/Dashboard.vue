@@ -411,7 +411,8 @@ const formatFileSize = (size) => {
                             v-if="$page.props.auth.user.type != 'superadmin'">
                             Previous Orders
                         </h3>
-                        <ul>
+                        <div v-if="orders.length == 0" class="text-white italic text-[14px]">No orders</div>
+                        <ul v-if="orders.length>0">
                             <li v-for="order in orders" :key="order.id" :class="{
                                 'border-gray-300 dark:border-gray-600 ': order.status === 'new',
                                 'border-yellow-500 border-opacity-50': order.status === 'processing',
@@ -689,27 +690,6 @@ const formatFileSize = (size) => {
                                 </PrimaryButton>
                             </div>
                         </form>
-                    </div>
-
-
-                    <div class="p-6 text-gray-600 italic">
-                        // TO DO<br>
-                        // <span class="text-green-700">[DONE]</span> order previous orders newest to oldest<br>
-                        // <span class="text-green-700">[DONE]</span> color 'new', 'processing', 'done' orders<br>
-                        // <span class="text-green-700">[DONE]</span> refresh list on upload success<br>
-                        // <span class="text-green-700">[DONE]</span> do upload form 'loading' and 'success' states<br>
-                        // <span class="text-green-700">[DONE]</span> work on user types<br>
-                        // <span class="text-green-700">[DONE]</span> make admin orders different than superadmin orders<br>
-                        // <span class="text-green-700">[DONE]</span> fix orders design in admin<br>
-                        // <span class="text-green-700">[DONE]</span> edit/delete orders functionality in superadmin<br>
-                        // <span class="text-green-700">[DONE]</span> edit/delete users functionality in superadmin<br>
-                        // <span class="text-green-700">[DONE]</span> delete files functionality superadmin<br>
-                        // <span class="text-green-700">[DONE]</span> add active/inactive/deleted status on orders, files and users db<br>
-                        // <span class="text-yellow-700">[PEND]</span> do stats view<br>
-                        // <span class="text-green-700">[DONE]</span> do admin view<br>
-                        // <span class="text-green-700">[DONE]</span> add phone to user<br>
-                        // <span class="text-green-700">[DONE]</span> verify email and phone<br>
-                        // <span class="text-red-700">[FAIL]</span> try to install toastify
                     </div>
                 </div>
             </div>

@@ -465,7 +465,7 @@ onMounted(() => {
                         </Link>
 
                     </li>
-                    <li v-if="props.relatedOrders.length == 0" class="text-center italic text-[14px]">
+                    <li v-if="props.relatedOrders.length == 0" class="text-center text-white italic text-[14px]">
                         No orders
                     </li>
                 </ul>
