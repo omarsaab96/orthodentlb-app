@@ -26,7 +26,8 @@ export default defineConfig({
     optimizeDeps: {
         include: ["swiper/vue"],
     },
+    base: './',  // Ensures relative paths for production
     build: {
-        outDir: 'dist' // Ensure this is correctly set
+        outDir: 'dist'
     }
 });
