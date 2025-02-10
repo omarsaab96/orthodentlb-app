@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', [UsersController::class, 'index'])->name('users');
     Route::put('/edituser', [UsersController::class, 'editUser'])->name('editUser');
     Route::get('/orders', [OrdersController::class, 'index'])->name('orders');
+    Route::get('/ordersbyUser', [OrdersController::class, 'indexByUser'])->name('ordersByUser');
     Route::get('/orders/details/{id}', [OrdersController::class, 'details'])->name('orders.details');
     Route::put('/editOrder', [OrdersController::class, 'updateOrder_isLinked'])->name('editOrder');
     Route::get('/files', [FilesController::class, 'index'])->name('files');

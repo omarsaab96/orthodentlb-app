@@ -26,4 +26,7 @@ export default defineConfig({
     optimizeDeps: {
         include: ["swiper/vue"],
     },
+    build: {
+        outDir: 'dist' // Ensure this is correctly set
+    }
 });

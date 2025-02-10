@@ -136,6 +136,10 @@ const showingNavigationDropdown = ref(false);
                                 v-if="$page.props.auth.user.type == 'superadmin'||$page.props.auth.user.type == 'admin'">
                                 Orders
                             </NavLink>
+                            <NavLink :href="route('ordersByUser')" :active="route().current('ordersByUser')||route().current('ordersByUser')" class="pb-3 pr-[10px]"
+                                v-if="$page.props.auth.user.type == 'superadmin'||$page.props.auth.user.type == 'admin'">
+                                Dentists
+                            </NavLink>
                             <NavLink :href="route('files')" :active="route().current('files')" class="pb-3 px-[10px]"
                                 v-if="$page.props.auth.user.type == 'superadmin'">
                                 Files

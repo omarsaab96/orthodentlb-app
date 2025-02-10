@@ -28,9 +28,6 @@ class OrdersController extends Controller
             $orders = Order::where('linked', '1')->orderBy('created_at', 'desc')->get();
         }
 
-        if ($user->type === 'superadmin') {
-            $orders = Order::orderBy('created_at', 'desc')->get();
-        }
         $fileIds = [];
 
         // Extract file IDs from orders' attachments
@@ -75,6 +72,69 @@ class OrdersController extends Controller
 
         return Inertia::render('Orders', [
             'orders' => $orders,
+        ]);
+    }
+
+    public function indexByUser()
+    {
+        $user = auth()->user();
+
+        if ($user->type !== 'superadmin' && $user->type !== 'admin') {
+            return redirect()->route('dashboard')->with('error', 'Unauthorized access to /orders.');
+        }
+
+        if ($user->type == 'superadmin') {
+            $orders = Order::orderBy('created_at', 'desc')->get();
+        }
+
+        if ($user->type == 'admin') {
+            $orders = Order::where('linked', '1')->orderBy('created_at', 'desc')->get();
+        }
+        
+        $fileIds = [];
+
+        // Extract file IDs from orders' attachments
+        foreach ($orders as $order) {
+            $attachments = json_decode($order->attachments, true);
+            if (is_array($attachments)) {
+                $fileIds = array_merge($fileIds, $attachments);
+            } elseif (is_object($attachments)) {
+                $fileIds = array_merge($fileIds, array_keys((array) $attachments));
+            }
+        }
+
+        // Get files that have an ID like the IDs in the orders' attachments fields
+        $files = File::whereIn('id', $fileIds)->where('linked', '1')->get();
+        if ($user->type === 'superadmin') {
+            $files = File::whereIn('id', $fileIds)->get();
+        }
+        // Attach files to their respective orders
+        foreach ($orders as $order) {
+            $attachments = json_decode($order->attachments, true);
+            $findUserWithId = $order->created_by;
+
+            if (is_array($attachments)) {
+                $order->attachments = $files->whereIn('id', $attachments)->values();
+            } elseif (is_object($attachments)) {
+                $order->attachments = $files->whereIn('id', array_keys((array) $attachments))->values();
+            }
+
+            if ($findUserWithId) {
+                $foundUser = User::where('id', $findUserWithId)->where('linked', '1')->first();
+
+                if ($foundUser) {
+                    $order->created_by = $foundUser['name'];
+                } else {
+                    $order->created_by = null;
+                }
+            } else {
+                $order->created_by = null;
+            }
+        }
+
+
+        return Inertia::render('OrdersByUser', [
+            'orders' => $orders
         ]);
     }
 
