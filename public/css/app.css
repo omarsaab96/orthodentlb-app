@@ -319,24 +319,24 @@ a.logo_white {
     margin-bottom: 0;
 }
 
-.uploadedFilesUl {
+.uploadedFilesUl,.ordersList {
     display: none;
 }
 
-.uploadedFileToggle {
+.uploadedFileToggle,.userOrderToggle {
     position: relative;
     padding-right: 12px;
 }
 
-.uploadedFileToggle::after {
+.uploadedFileToggle::after,.userOrderToggle::after {
     transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.uploadedFileToggle:hover::after {
+.uploadedFileToggle:hover::after,.userOrderToggle:hover::after {
     filter: brightness(0) saturate(100%) invert(7%) sepia(56%) saturate(634%) hue-rotate(182deg) brightness(92%) contrast(95%);
 }
 
-.uploadedFileToggle::after {
+.uploadedFileToggle::after,.userOrderToggle::after {
     content: '';
     display: block;
     position: absolute;
@@ -351,7 +351,7 @@ a.logo_white {
     transform: translateY(-50%);
 }
 
-.uploadedFileToggle.open::after {
+.uploadedFileToggle.open::after,.userOrderToggle.open::after {
     transform: translateY(-50%) rotateZ(180deg);
 }
 

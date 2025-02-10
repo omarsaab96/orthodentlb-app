@@ -212,7 +212,7 @@ const processing = ref(false);
                                     </a>
                                 </h3>
 
-                                <ul class="ordersList hidden mt-[20px]">
+                                <ul class="ordersList mt-[20px]">
                                     <li v-for="order in user.orders" :key="order.id" :class="{
                                         ' dark:border-gray-600 ': order.status === 'new',
                                         'border-yellow-500 border-opacity-50': order.status === 'processing',
