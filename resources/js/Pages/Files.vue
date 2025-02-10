@@ -22,6 +22,33 @@ const deleteForm = useForm({
 const confirmingFileDeletion = ref(false);
 const fileToBeDeleted = ref(null);
 const processing = ref(false);
+const editing_isLinked = ref('');
+
+
+const editform = useForm({
+    id: '',
+    linked: ''
+});
+
+const editFile = (file) => {
+    editform.id = file.id;
+    editform.linked = file.linked
+
+    editing_isLinked.value = file.id
+
+    editform.put(route('editFile'), {
+        preserveScroll: true,
+        onSuccess: () => {
+            editing_isLinked.value = '';
+            editform.value = {
+                id: '',
+                linked: ''
+            }
+        },
+        onError: (err) => console.log(err),
+        onFinish: () => editform.reset(),
+    });
+};
 
 const deleteFile = (file) => {
     confirmingFileDeletion.value = true;
@@ -48,9 +75,6 @@ const closeModal = () => {
         id: ''
     }
 };
-
-
-
 
 const formatDate = (datetime) => {
     if (typeof datetime !== 'string') {
@@ -157,7 +181,13 @@ const formatFileSize = (size) => {
                                 <td style="border:1px solid white">{{ file.extension }}</td>
                                 <td style="border:1px solid white">{{ formatFileSize(file.size) }}</td>
                                 <td style="border:1px solid white" v-html="formatDate(file.dateOfUpload)"></td>
-                                <td style="border:1px solid white">{{ file.linked }}</td>
+                                <td style="border:1px solid white">
+                                    <div class="flex align-center">
+                                        <span v-if="editing_isLinked==file.id" class="w-[10px] loader"></span>
+                                        <input id="linked" v-model="file.linked" type="checkbox" :true-value="1"
+                                            :false-value="0" class="form-checkbox" @change="editFile(file)" />
+                                    </div>
+                                </td>
                                 <td style="border:1px solid white">
                                     <a target="_blank"
                                         class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100 dark:focus:ring-offset-gray-800"

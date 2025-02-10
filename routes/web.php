@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/details/{id}', [OrdersController::class, 'details'])->name('orders.details');
     Route::put('/editOrder', [OrdersController::class, 'updateOrder_isLinked'])->name('editOrder');
     Route::get('/files', [FilesController::class, 'index'])->name('files');
+    Route::put('/editFile', [FilesController::class, 'updateFile_isLinked'])->name('editFile');
+
 });
 
 require __DIR__ . '/auth.php';

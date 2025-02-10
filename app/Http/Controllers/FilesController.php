@@ -25,8 +25,49 @@ class FilesController extends Controller
         ]);
     }
 
+    public function updateFile_isLinked(Request $request)
+    {
+
+        $user = auth()->user();
+
+        if ($user->type !== 'superadmin') {
+            if ($user->type == 'admin') {
+                return redirect()->route('orders')->with('error', 'Unauthorized access to /updateFile.');
+            }
+            if ($user->type == 'normal') {
+                return redirect()->route('dashboard')->with('error', 'Unauthorized access to /updateFile.');
+            }
+        }
+
+        // Find the order by its ID
+        $file = File::where('id', $request['id'])->first();
+
+
+        if (!$file) {
+            return redirect()->route('files', ['id' => $request->id])->with('error', 'File not found.');
+        }
+
+        // Validate the request status
+        $isLinked = $request['linked'];
+        $validLinks = [1, 0];
+
+        if (!in_array($isLinked, $validLinks)) {
+            return redirect()->route('files', ['id' => $request->id])->with('error', 'Invalid linked value.');
+        }
+
+        // Update the file link status
+        $file->linked = $isLinked;
+        $file->save();
+
+        // Return a JSON success message
+        return redirect()->route('files', ['id' => $request->id])->with('success', 'File link updated successfully.');
+
+
+    }
+
     public function deleteFile(Request $request)
     {
+        logger($request);
 
         $user = auth()->user();
         if ($user->type !== 'superadmin') {
@@ -48,24 +89,28 @@ class FilesController extends Controller
 
             $order = Order::whereJsonContains('attachments', $file['id'])
                 ->first();
-            $fileIds = $order->attachments;
-            $fileIdToRemove = $file['id'];
+            if ($order) {
+                $fileIds = $order->attachments;
+                $fileIdToRemove = $file['id'];
+                $fileIds = array_filter(json_decode($fileIds), function ($id) use ($fileIdToRemove) {
+                    return $id !== $fileIdToRemove;
+                });
 
-            $fileIds = array_filter(json_decode($fileIds), function ($id) use ($fileIdToRemove) {
-                return $id !== $fileIdToRemove;
-            });
+                $fileIds = array_values($fileIds);
 
-            $fileIds = array_values($fileIds);
-
-            if (count($fileIds) == 0) {
-                $order->update([
-                    'attachments' => null
-                ]);
-            } else {
-                $order->update([
-                    'attachments' => json_encode($fileIds)
-                ]);
+                if (count($fileIds) == 0) {
+                    $order->update([
+                        'attachments' => null
+                    ]);
+                } else {
+                    $order->update([
+                        'attachments' => json_encode($fileIds)
+                    ]);
+                }
             }
+
+
+
 
 
             $file->delete();
