@@ -207,7 +207,7 @@ const processing = ref(false);
                                 <h3 class="flex align-center justify-between text-[18px] leading-[20px]">
                                     {{ user.createdBy }}
                                     <a href="javascript:;"
-                                        class="userOrderToggle hover:text-gray-900 transition text-[12px] leading-[16px]">
+                                        class="userOrderToggle hover:text-gray-900 transition text-[12px] leading-[20px]">
                                         Show Orders <i></i>
                                     </a>
                                 </h3>

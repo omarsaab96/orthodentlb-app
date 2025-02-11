@@ -501,7 +501,7 @@ onMounted(() => {
                 </tr>
                 <tr class="border-b border-1 border-solid border-gray-600">
                     <td class="w-[130px] font-semibold">Attachments</td>
-                    <td class="pr-[10px]">{{ props.order.attachments.length }} {{ props.order.attachments.length == 1 ?
+                    <td class="pr-[10px]">{{ props.order.attachments==null? '0' : props.order.attachments?.length }} {{ props.order.attachments?.length == 1 ?
                         'file'
                         : 'files' }}</td>
                 </tr>

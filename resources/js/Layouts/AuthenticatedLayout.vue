@@ -128,34 +128,47 @@ const showingNavigationDropdown = ref(false);
                     <!-- Navigation Links -->
                     <div class="space-x-8 flex justify-between">
                         <div>
-                            <NavLink :href="route('dashboard')" :active="route().current('dashboard')" class="pb-3 pr-[10px]" v-if="$page.props.auth.user.type == 'normal'">
+                            <NavLink :href="route('dashboard')" :active="route().current('dashboard')"
+                                class="pb-3 pr-[10px]" v-if="$page.props.auth.user.type == 'normal'">
                                 Dashboard
                             </NavLink>
-                            
-                            <NavLink :href="route('orders')" :active="route().current('orders')||route().current('orders.details')" class="pb-3 pr-[10px]"
-                                v-if="$page.props.auth.user.type == 'superadmin'||$page.props.auth.user.type == 'admin'">
+
+                            <NavLink :href="route('orders')"
+                                :active="route().current('orders') || route().current('orders.details')"
+                                class="pb-3 pr-[10px]"
+                                v-if="$page.props.auth.user.type == 'superadmin' || $page.props.auth.user.type == 'admin'">
                                 Orders
                             </NavLink>
-                            <NavLink :href="route('ordersByUser')" :active="route().current('ordersByUser')||route().current('ordersByUser')" class="pb-3 pr-[10px]"
-                                v-if="$page.props.auth.user.type == 'superadmin'||$page.props.auth.user.type == 'admin'">
+
+                            <NavLink :href="route('ordersByUser')"
+                                :active="route().current('ordersByUser') || route().current('ordersByUser')"
+                                class="pb-3 pr-[10px]"
+                                v-if="$page.props.auth.user.type == 'superadmin' || $page.props.auth.user.type == 'admin'">
                                 Dentists
                             </NavLink>
+
                             <NavLink :href="route('files')" :active="route().current('files')" class="pb-3 px-[10px]"
                                 v-if="$page.props.auth.user.type == 'superadmin'">
                                 Files
                             </NavLink>
+
                             <NavLink :href="route('users')" :active="route().current('users')" class="pb-3 px-[10px]"
                                 v-if="$page.props.auth.user.type == 'superadmin'">
                                 Users
                             </NavLink>
-
                         </div>
+
                         <div>
-
+                            <!-- <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')"
+                                class="pb-3">
+                                Go back to homepage
+                            </NavLink> -->
+                            <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')"
+                                class="pb-3">
+                                Profile
+                            </NavLink>
                         </div>
-                        <NavLink :href="route('profile.edit')" :active="route().current('profile.edit')" class="pb-3">
-                            Profile
-                        </NavLink>
+
                     </div>
                 </div>
             </header>

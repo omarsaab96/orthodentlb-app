@@ -410,7 +410,7 @@ const scrollToDiv = (divId) => {
                                             <div
                                                 class="absolute bottom-[20px] left-[20px] serviceInfo  backdrop-blur-[5px] ">
                                                 <h6 class="text-white text-l font-semibold">Orthodontic
-                                                    &amp; Pedodontic apps</h6>
+                                                    &amp; Pedodontic appliances</h6>
                                                 <p class="font-normal text-white">
                                                     Designed for orthodontic care and precise results.
                                                 </p>
@@ -422,7 +422,7 @@ const scrollToDiv = (divId) => {
 
                                             <div
                                                 class="absolute bottom-[20px] left-[20px] serviceInfo  backdrop-blur-[5px] ">
-                                                <h6 class="text-white text-l font-semibold">OrthoAprea
+                                                <h6 class="text-white text-l font-semibold">OrthoApnea
                                                 </h6>
                                                 <p class="font-normal text-white">
                                                     We prioritize your comfort and satisfaction throughout your
@@ -438,7 +438,7 @@ const scrollToDiv = (divId) => {
 
                                             <div
                                                 class="absolute bottom-[20px] left-[20px] serviceInfo  backdrop-blur-[5px] ">
-                                                <h6 class="text-white text-l font-semibold">Digital positions of
+                                                <h6 class="text-white text-l font-semibold">Digital positioning of
                                                     MSE
 
                                                 </h6>
@@ -541,19 +541,19 @@ const scrollToDiv = (divId) => {
                                         <ul>
                                             <li>
                                                 <h6 class="text-l text-[var(--dark-text-color)] font-semibold">
-                                                    > Orthodontic &amp; Pedodontic apps
+                                                    > Orthodontic &amp; Pedodontic appliances
                                                 </h6>
                                             </li>
 
                                             <li>
                                                 <h6 class="text-l text-[var(--dark-text-color)] font-semibold">
-                                                    > OrthoAprea
+                                                    > OrthoApnea
                                                 </h6>
                                             </li>
 
                                             <li>
                                                 <h6 class="text-l text-[var(--dark-text-color)] font-semibold">
-                                                    > Digital positions of MSE
+                                                    > Digital positioning of MSE
                                                 </h6>
                                             </li>
 
@@ -961,13 +961,13 @@ const scrollToDiv = (divId) => {
 
                 <ul>
                   <li class="mb-2.5">
-                    <a href="/services" class="block font-normal text-[var(--light-text-color)]">Orthodontic & Pedodontic apps</a>
+                    <a href="/services" class="block font-normal text-[var(--light-text-color)]">Orthodontic & Pedodontic appliances</a>
                   </li>
                   <li class="mb-2.5">
-                    <a href="/services" class="block font-normal text-[var(--light-text-color)]">OrthoAprea</a>
+                    <a href="/services" class="block font-normal text-[var(--light-text-color)]">OrthoApnea</a>
                   </li>
                   <li class="mb-2.5">
-                    <a href="/services" class="block font-normal text-[var(--light-text-color)]">Digital positions ofMSE</a>
+                    <a href="/services" class="block font-normal text-[var(--light-text-color)]">Digital positioning ofMSE</a>
                   </li>
                   <li class="mb-2.5">
                     <a href="/services" class="block font-normal text-[var(--light-text-color)]">Clear aligners</a>
