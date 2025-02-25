@@ -34,7 +34,7 @@ const updatePassword = () => {
 </script>
 
 <template>
-    <section class="flex content-between items-center gap-4 w-full">
+    <section class="flex content-between items-center gap-4 w-full columnSmall">
         <header class="w-[40%]">
             <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                 Update Password

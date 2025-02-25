@@ -243,7 +243,7 @@ onMounted(() => {
             </div>
         </template>
 
-        <div class="py-12">
+        <div class="py-12 orderDetailsDiv">
 
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex-col flex md:flex-row gap-4 md:gap-4 mb-[50px]">
                 <div class="containerBorder overflow-hidden border-solid border-2 bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 w-full"
@@ -268,10 +268,10 @@ onMounted(() => {
                                 ' border-green-500 dark:border-green-500': order.status === 'done',
                                 ' border-red-500 dark:border-red-500': order.status === 'canceled'
                             }">
-                            <h3 class=" font-semibold text-[20px] max-w-[calc(100%-150px)]">
+                            <h3 class="orderdetailsname font-semibold text-[20px] max-w-[calc(100%-150px)]">
                                 {{ props.order.name }}
                             </h3>
-                            <div class="flex items-center">
+                            <div class="flex items-center statusbar">
                                 <div class="flex items-center orderStatusContainer">
                                     <span v-if="changeStatusLoader" class="w-[20px] mr-[10px] loader"></span>
 
@@ -395,7 +395,7 @@ onMounted(() => {
                     </div>
                 </h4>
 
-                <ul class="flex gap-[15px] flex-wrap">
+                <ul class="flex gap-[15px] flex-wrap relatedOrders">
                     <li v-for="order in props.relatedOrders" :key="order.id" :class="{
                         'border-gray-300 dark:border-gray-600 ': order.status === 'new',
                         'border-yellow-500 border-opacity-50': order.status === 'processing',
@@ -415,12 +415,12 @@ onMounted(() => {
                             {{ order.status }}
                         </div>
 
-                        <div class="flex flex-col mb-[10px]">
+                        <div class="flex flex-col mb-[10px] ">
                             <div class="text-[18px] leading-[20px]">
                                 <span class="block font-bold mb-[5px]">{{ order.name }}</span>
                                 <!-- {{ order.created_by == null ? 'unknown' : order.created_by }} -->
                             </div>
-                            <div class="flex items-center dark:text-white-700 text-[14px] leading-[14px]"
+                            <div class="flex datefield items-center dark:text-white-700 text-[14px] leading-[14px]"
                                 v-html="formatDate(order.created_at)">
                             </div>
                         </div>

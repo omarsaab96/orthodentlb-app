@@ -30,7 +30,7 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
+    <GuestLayout class="guestlayout" >
 
         <Head title="Log in" />
 
@@ -69,7 +69,7 @@ const submit = () => {
                 </Link>
             </div>
 
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between columnSmall">
                 <div class="flex items-center">
                     <p class="text-white">Don't have an account?
                         <Link :href="route('register')"

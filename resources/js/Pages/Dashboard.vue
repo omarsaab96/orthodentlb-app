@@ -358,7 +358,7 @@ const formatFileSize = (size) => {
 
     <Head title="Dashboard" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout class="authLayout">
         <template #header>
             <div class="flex flex-col justify-between">
                 <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200 mb-5 flex items-center">
@@ -403,10 +403,10 @@ const formatFileSize = (size) => {
                 </div>
             </div>
 
-            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex-col flex md:flex-row gap-4 md:gap-4">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 flex-col flex md:flex-row gap-4 md:gap-4 onMobileColumnFlip">
 
                 <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800 w-full">
-                    <div class="p-6 text-gray-900 dark:text-gray-100 ">
+                    <div class="p-6 text-gray-900 dark:text-gray-100 smallerPaddings">
                         <h3 class="mb-[20px] font-semibold text-[20px] border-b border-gray-100 dark:border-gray-700"
                             v-if="$page.props.auth.user.type != 'superadmin'">
                             Previous Orders

@@ -22,7 +22,7 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
+    <GuestLayout class="guestlayout">
 
         <Head title="Register" />
 
@@ -71,7 +71,7 @@ const submit = () => {
                 <InputError class="mt-2" :message="form.errors.password_confirmation" />
             </div>
 
-            <div class="mt-4 flex items-center justify-between">
+            <div class="mt-4 flex items-center justify-between columnSmall">
                 <div class="flex items-center">
                     <p class="text-white">Already registered?
                         <Link :href="route('login')"

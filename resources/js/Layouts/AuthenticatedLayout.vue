@@ -90,10 +90,39 @@ const showingNavigationDropdown = ref(false);
                 <div :class="{
                     block: showingNavigationDropdown,
                     hidden: !showingNavigationDropdown,
-                }" class="sm:hidden">
+                }" class="absolute w-[100%] sm:hidden bg-[#1f2937]">
                     <div class="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                        <!-- <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
                             Dashboard
+                        </ResponsiveNavLink> -->
+
+                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')"
+                            class="pb-3 pr-[10px]" v-if="$page.props.auth.user.type == 'normal'">
+                            Dashboard
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('orders')"
+                            :active="route().current('orders') || route().current('orders.details')"
+                            class="pb-3 pr-[10px]"
+                            v-if="$page.props.auth.user.type == 'superadmin' || $page.props.auth.user.type == 'admin'">
+                            Orders
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('ordersByUser')"
+                            :active="route().current('ordersByUser') || route().current('ordersByUser')"
+                            class="pb-3 pr-[10px]"
+                            v-if="$page.props.auth.user.type == 'superadmin' || $page.props.auth.user.type == 'admin'">
+                            Dentists
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('files')" :active="route().current('files')" class="pb-3 px-[10px]"
+                            v-if="$page.props.auth.user.type == 'superadmin'">
+                            Files
+                        </ResponsiveNavLink>
+
+                        <ResponsiveNavLink :href="route('users')" :active="route().current('users')" class="pb-3 px-[10px]"
+                            v-if="$page.props.auth.user.type == 'superadmin'">
+                            Users
                         </ResponsiveNavLink>
                     </div>
 
@@ -126,7 +155,7 @@ const showingNavigationDropdown = ref(false);
                     <slot name="header" />
 
                     <!-- Navigation Links -->
-                    <div class="space-x-8 flex justify-between">
+                    <div class="hideOnMobile space-x-8 flex justify-between">
                         <div>
                             <NavLink :href="route('dashboard')" :active="route().current('dashboard')"
                                 class="pb-3 pr-[10px]" v-if="$page.props.auth.user.type == 'normal'">

@@ -108,7 +108,7 @@ const closeEditModal = () => {
 
     <Head title="Users" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout class="authLayout">
         <template #header>
             <div class="flex flex-col justify-between">
                 <h2 class="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200 mb-5 flex items-center">

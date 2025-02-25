@@ -58,6 +58,16 @@ const scrollToDiv = (divId) => {
     }
 };
 
+const openMobileMenu = () => {
+    if ($('#mobile-menu-button').hasClass('open')) {
+        $('#mobile-menu-button').removeClass('open')
+        $('#navigation-menu').slideUp()
+    } else {
+        $('#mobile-menu-button').addClass('open')
+        $('#navigation-menu').slideDown()
+    }
+}
+
 </script>
 
 <template>
@@ -90,17 +100,17 @@ const scrollToDiv = (divId) => {
                             <div class="p-[18px] bg-[#EFEFED] rounded-[35px] mx-[18px]">
                                 <header class="w-full code-section mb-[60px]" id="sor4t18">
                                     <nav class="ml-auto">
-                                        <div class="relative flex items-center lg:justify-between">
+                                        <div class="relative flex items-center justify-between">
+                                            <a href="/" class="logo"></a>
+
                                             <button id="mobile-menu-button" data-collapse-toggle="navigation-menu"
                                                 type="button"
-                                                class="flex h-[45px] w-[45px] items-center justify-center rounded-full bg-[#101010] lg:hidden"
+                                                class="flex h-[45px] w-[45px] items-center justify-center rounded-full bg-[#1d3852] lg:hidden"
                                                 aria-controls="navigation-menu" aria-expanded="false"
-                                                aria-label="Navigation Menu">
+                                                aria-label="Navigation Menu" @click=openMobileMenu()>
                                                 <i class="fa-regular fa-bars-sort text-xl text-white"
                                                     aria-hidden="true"></i>
                                             </button>
-
-                                            <a href="/" class="logo"></a>
 
                                             <div id="navigation-menu"
                                                 class="absolute left-0 top-full z-50 mt-4 hidden w-full flex-1 bg-[#FFFFFF] lg:static lg:mt-0 lg:flex items-stretch lg:justify-between lg:bg-transparent">

@@ -319,24 +319,29 @@ a.logo_white {
     margin-bottom: 0;
 }
 
-.uploadedFilesUl,.ordersList {
+.uploadedFilesUl,
+.ordersList {
     display: none;
 }
 
-.uploadedFileToggle,.userOrderToggle {
+.uploadedFileToggle,
+.userOrderToggle {
     position: relative;
     padding-right: 12px;
 }
 
-.uploadedFileToggle::after,.userOrderToggle::after {
+.uploadedFileToggle::after,
+.userOrderToggle::after {
     transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.uploadedFileToggle:hover::after,.userOrderToggle:hover::after {
+.uploadedFileToggle:hover::after,
+.userOrderToggle:hover::after {
     filter: brightness(0) saturate(100%) invert(7%) sepia(56%) saturate(634%) hue-rotate(182deg) brightness(92%) contrast(95%);
 }
 
-.uploadedFileToggle::after,.userOrderToggle::after {
+.uploadedFileToggle::after,
+.userOrderToggle::after {
     content: '';
     display: block;
     position: absolute;
@@ -351,7 +356,8 @@ a.logo_white {
     transform: translateY(-50%);
 }
 
-.uploadedFileToggle.open::after,.userOrderToggle.open::after {
+.uploadedFileToggle.open::after,
+.userOrderToggle.open::after {
     transform: translateY(-50%) rotateZ(180deg);
 }
 
@@ -428,4 +434,288 @@ a.logo_white {
 [type='text']:focus,
 [type='checkbox']:focus {
     box-shadow: none;
+}
+
+
+@media all and (max-width:1200px) {
+    .logobg {
+        height: 400px;
+    }
+
+    #services,
+    #about,
+    #about .pb-\[50px\] {
+        padding-bottom: 0;
+    }
+
+    #services>.items-center {
+        align-items: flex-start;
+    }
+
+    .servicesList li {
+        margin-bottom: 10px;
+    }
+
+    footer .text-lg,
+    footer .lg\:text-base {
+        font-size: 14px;
+        line-height: 14px;
+    }
+
+    footer .lg\:h-\[50px\],
+    footer .lg\:w-\[50px\] {
+        height: 35px;
+        width: 35px;
+    }
+
+    a.logo {
+        width: 250px;
+    }
+
+    footer a.logo {
+        width: 200px;
+    }
+
+    footer .lg\:mt-9 {
+        margin-top: 10px;
+    }
+
+    header .secBtn {
+        padding-left: 15px;
+        height: 40px;
+    }
+
+    header .secBtn span {
+        height: 28px;
+        width: 28px;
+    }
+
+    .primBtn {
+        padding-left: 15px;
+        height: 40px;
+        font-size: 14px;
+    }
+
+    .primBtn span {
+        height: 28px;
+        width: 28px;
+    }
+
+    .contactusdiv .right a {
+        height: 40px;
+    }
+
+    .contactusdiv .right a .icondiv {
+        height: 28px;
+        width: 28px;
+        border: none;
+    }
+
+    .iglink {
+        height: 40px;
+    }
+}
+
+@media all and (max-width:1024px) {
+
+    .logobg,
+    .servicesslider,
+    footer .flex.justify-between .w-\[30\%\] {
+        height: auto;
+        margin-bottom: 30px;
+    }
+
+    footer .flex.justify-between,
+    #services .flex.justify-between,
+    #about .flex.justify-between {
+        flex-direction: column;
+    }
+
+    footer .flex.justify-between .w-\[40\%\],
+    footer .flex.justify-between .w-\[30\%\],
+    #services .flex.justify-between .w-\[40\%\],
+    #services .flex.justify-between .w-\[50\%\],
+    #about .flex.justify-between .w-\[40\%\],
+    #about .flex.justify-between .w-\[50\%\] {
+        width: 100%;
+        padding: 0;
+    }
+
+    footer .sm\:mt-16 {
+        margin-top: 0;
+    }
+
+    footer .sm\:pt-7 {
+        padding-top: 10px;
+    }
+
+    footer .relative.z-50 {
+        padding-bottom: 10px;
+    }
+
+    header a.logo,
+    #mobile-menu-button {
+        z-index: 51;
+    }
+
+    #navigation-menu {
+        top: -36px;
+        left: 50%;
+        width: 100vw;
+        transform: translateX(-50%);
+        margin: 0;
+        padding: 100px 18px 18px;
+    }
+
+    #navigation-menu ul {
+        padding-bottom: 50px;
+        border-bottom: 1px solid #1d3852;
+    }
+
+    #navigation-menu ul li:first-child {
+        border: none;
+    }
+
+
+    #navigation-menu .secBtn {
+        background-color: #1d3852;
+        color: white;
+        width: 100%;
+        text-align: center;
+    }
+
+    #navigation-menu .secBtn span {
+        /* display:none; */
+    }
+
+    .hideOnMobile {
+        display: none;
+    }
+
+    .clearButton {
+        height: 40px;
+    }
+
+    .authLayout main .py-12 {
+        padding-top: 20px !important;
+    }
+
+    .orderDetailsDiv {
+        padding-top: 20px !important;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .orderDetailsDiv h4.text-white {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .relatedOrders li {
+        width: calc(50% - 15px);
+    }
+
+    .relatedOrders li .datefield .flex {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .orderHead {
+        flex-direction: column-reverse;
+    }
+
+    .orderdetailsname {
+        max-width: 100%;
+        /* margin-bottom: 20px; */
+    }
+
+    .statusbar {
+        flex-direction: column;
+        align-items: flex-end;
+        width: 100%;
+    }
+
+    .orderDetailsDiv .containerBorder>div {
+        padding: 10px;
+    }
+
+    .orderDetailsStatus {
+        height: auto;
+        width: auto;
+        font-size: 12px;
+        line-height: 12px;
+        padding: 5px;
+    }
+
+    .orderStatusContainer {
+        margin-bottom: 5px;
+    }
+
+    .containerBorder .text-\[18px\],
+    .containerBorder .text-\[16px\] {
+        font-size: 14px;
+    }
+
+    .someSpace{
+        padding-bottom:20px;
+        margin-bottom:0;
+    }
+
+    .columnSmall{
+        flex-direction: column;
+        align-items: flex-start;
+        padding:0 20px;
+    }
+
+    .columnSmall .w-\[40\%\]{
+        width:100%;
+    }
+
+    .guestlayout{
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+    .guestlayout .columnSmall{
+        padding:0;
+    }
+    .guestlayout .columnSmall button{
+        margin:0;
+        width:100%;
+        text-align: center;
+        justify-content: center;
+        margin-top:10px;
+    }
+
+    .smallerPaddings{
+        padding-left:18px;
+        padding-right:18px;
+    }
+
+    .onMobileColumnFlip{
+        flex-direction: column-reverse;
+    }
+
+}
+
+@media all and (max-width:670px) {
+    a.logo {
+        width: 200px;
+    }
+
+    .text-\[30px\] {
+        font-size: 28px;
+    }
+
+    .contactusdiv .right>div>div.flex.items-center {
+        width: 100%;
+        margin: 0;
+        flex: 0 0 100%;
+    }
+
+    .contactusdiv .right>div>div.flex.items-center a.flex.items-center {
+        width: 100%;
+    }
+
+
+
 }
