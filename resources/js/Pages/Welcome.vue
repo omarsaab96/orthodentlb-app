@@ -4,6 +4,7 @@ import { Head, Link } from '@inertiajs/vue3';
 import $ from "jquery";
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import { Autoplay, Pagination, Navigation } from 'swiper/modules';
+import { ImgComparisonSlider } from '@img-comparison-slider/vue';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -69,6 +70,20 @@ const openMobileMenu = () => {
 }
 
 </script>
+
+
+<style type="text/css">
+img-comparison-slider {
+    --divider-width: 5px;
+    --divider-color: #1d3852;
+    --default-handle-opacity: 1;
+    --default-handle-width: 100px;
+    --default-handle-color: #1d3852;
+    --default-handle-stroke: 5px;
+    outline: none !important;
+}
+</style>
+
 
 <template>
 
@@ -603,6 +618,61 @@ const openMobileMenu = () => {
                     </a>
                   </div> -->
 
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- <div class="absolute left-0 top-[194px] hidden sm:block">
+              <img
+                src="https://imagedelivery.net/xaKlCos5cTg_1RWzIu_h-A/0166019e-a1a1-47f5-f881-36be06926d00/publicContain"
+                alt="">
+            </div> -->
+                    </section>
+
+                    <section class="relative  px-[18px] code-section bg-[#EFEFED] " id="s0m4vzqq">
+                        <div class="mx-auto py-[60px]" id="services">
+                            <div class="flex lg:flex-row justify-between items-center">
+                                <div class="mb-5 pr-[20px] w-[50%]">
+                                    <div
+                                        class="flex items-center text-lg font-medium text-[var(--dark-text-color)] sm:text-base xl:text-lg">
+                                        <p
+                                            class="my-0 font-medium text-[var(--accent-color)] md:text-lg text-[var(--primary-color)]">
+                                            Before and After
+                                        </p>
+                                    </div>
+                                    <h2
+                                        class="mx-auto mb-2.5 text-[30px] font-medium leading-[45px] text-[var(--dark-text-color)]">
+                                        Transformations That 
+                                        <span class="text-[var(--primary-color)]">Speak Volumes</span>
+
+                                    </h2>
+                                    <p class="mb-[15px] font-normal leading-[30px] text-[var(--dark-text-color)]">
+                                        At Orthodent, we take pride in creating smiles that not only look beautiful but
+                                        also boost our
+                                        patients' confidence. Explore some of our remarkable smile transformations
+                                        below.
+                                    </p>
+                                </div>
+
+                                <div class=" w-[50%] comparison-section rounded-[30px] overflow-hidden">
+                                    <ImgComparisonSlider>
+                                        <!-- eslint-disable -->
+                                        <img slot="first" style="width: 100%" src="images/before1.jpg" />
+
+                                        <img slot="second" style="width: 100%" src="images/after1.jpg" />
+                                        <!-- eslint-enable -->
+
+                                        <svg slot="handle" class="custom-animated-handle"
+                                            xmlns="http://www.w3.org/2000/svg" width="50" viewBox="0 0 24 24"
+                                            fill="none">
+                                            <path
+                                                d="M16.1359 18.2928C16.5264 18.6833 17.1596 18.6833 17.5501 18.2928L22.4375 13.4006C23.2179 12.6194 23.2176 11.3536 22.4369 10.5728L17.5465 5.68247C17.156 5.29195 16.5228 5.29195 16.1323 5.68247C15.7418 6.073 15.7418 6.70616 16.1323 7.09669L20.3179 11.2823C20.7085 11.6729 20.7085 12.306 20.3179 12.6965L16.1359 16.8786C15.7454 17.2691 15.7454 17.9023 16.1359 18.2928Z"
+                                                fill="#1d3852" />
+                                            <path
+                                                d="M7.88675 5.68247C7.49623 5.29195 6.86307 5.29195 6.47254 5.68247L1.58509 10.5747C0.804698 11.3559 0.805008 12.6217 1.58579 13.4024L6.47615 18.2928C6.86667 18.6833 7.49984 18.6833 7.89036 18.2928C8.28089 17.9023 8.28089 17.2691 7.89036 16.8786L3.70471 12.6929C3.31419 12.3024 3.31419 11.6692 3.70472 11.2787L7.88675 7.09669C8.27728 6.70616 8.27728 6.073 7.88675 5.68247Z"
+                                                fill="#1d3852" />
+                                        </svg>
+                                    </ImgComparisonSlider>
                                 </div>
 
                             </div>
